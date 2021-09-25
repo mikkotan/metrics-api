@@ -70,12 +70,12 @@ RSpec.describe 'Metrics API', type: :request do
     before { delete "/api/v1/metrics/#{metric_id}" }
 
     it 'deletes the metric' do
-      metrics_count = Metric.all.count
-      expect(metrics_count).to eq 4
+      deleted_metric = Metric.where(id: metric_id).limit(1).first
+      expect(deleted_metric).to eq nil
     end
 
-    it 'return status 204' do
-      expect(response).to have_http_status 204
+    it 'return status 200' do
+      expect(response).to have_http_status 200
     end
   end
 end
