@@ -1,47 +1,58 @@
 module Api
   module V1
     class MetricsController < ApplicationController
-      before_action :find_metric, only: [:update, :destroy]
+      include ErrorHandlers
 
       def index
-        metrics = Metric.all
-        render json: metrics, status: :ok
+        result = Metrics::Transactions::List.new.call
+
+        case result
+        in Success(metrics)
+          render json: metrics, status: :ok
+        else
+          handle_bad_request(result)
+        end
       end
 
       def create
-        metric = Metric.new(metric_params)
+        result = Metrics::Transactions::Create.new.call(metric_params)
 
-        if metric.valid?
+        case result
+        in Success(metric)
           render json: metric, status: :created
-        else
-          render json: { error: metric.errors.full_messages }, status: :unprocessable_entity
+        in Failure[:invalid_params, error_messages]
+          handle_invalid_params(error_messages)
         end
       end
 
       def update
-        if @metric.update(metric_params)
-          render json: @metric, status: :ok
-        else
-          render json: { error: metric.errors.full_message }, status: :unprocessable_entity
+        result = Metrics::Transactions::Update.new.call(metric_params)
+
+        case result
+        in Success(metric)
+          render json: metric, status: :ok
+        in Failure[:not_found, message]
+          handle_not_found(message)
+        in Failure[:invalid_params, error_messages]
+          handle_invalid_params(error_messages)
         end
       end
 
       def destroy
-        @metric.destroy
-        head :no_content
+        result = Metrics::Transactions::Destroy.new.call(metric_params[:id])
+
+        case result
+        in Success(id)
+          render json: { deleted_metric_id: id }, status: :ok
+        in Failure[:not_found, message]
+          handle_not_found(message)
+        end
       end
 
       private
 
       def metric_params
-        params.permit(:name)
-      end
-
-      def find_metric
-        @metric = Metric.find(params[:id])
-
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Metric not found' }, status: :not_found
+        params.to_unsafe_h
       end
     end
   end
