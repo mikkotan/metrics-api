@@ -20,7 +20,7 @@ module Api
 
       def update
         if @metric.update(metric_params)
-          render json: metric, status: :ok
+          render json: @metric, status: :ok
         else
           render json: { error: metric.errors.full_message }, status: :unprocessable_entity
         end
@@ -39,7 +39,9 @@ module Api
 
       def find_metric
         @metric = Metric.find(params[:id])
-        render json: { error: 'Metric not found' }, status: :not_found unless metric.present?
+
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: 'Metric not found' }, status: :not_found
       end
     end
   end
