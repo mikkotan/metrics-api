@@ -9,6 +9,7 @@ module MetricValues
         value.metric_id = params[:metric_id]
         value.timestamp = params[:timestamp]
         value.value = params[:value]
+        value.save!
 
         Success(value)
       rescue ActiveRecord::RecordInvalid

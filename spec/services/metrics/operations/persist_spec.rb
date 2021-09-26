@@ -32,7 +32,7 @@ RSpec.describe Metrics::Operations::Persist do
       let(:update_params) { { name: 'Server Uptime'} }
 
       it 'should update the record' do
-        result = subject.call(params: update_params)
+        result = subject.call(metric_record: metric, params: update_params)
         metric = result.success
 
         expect(result).to be_success
