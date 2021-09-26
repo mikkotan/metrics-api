@@ -4,7 +4,7 @@ module MetricValues
       include App::Transaction
 
       def initialize(deps = {})
-        contract = deps[:contract] || Contracts::RequestParams.new
+        contract = deps[:contract] || Contracts::Destroy.new
         @apply_contract = deps[:apply_contract] || App::ApplyContract.new(contract)
         @validate_metric = deps[:validate_metric] || Metric::Operations::FindById.new
         @find_value = deps[:find_value] || Operations::FindById.new
