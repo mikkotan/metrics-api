@@ -31,7 +31,7 @@ RSpec.describe 'Metric Values API', type: :request do
   end
 
   describe 'POST /api/v1/metrics/:metric_id/values' do
-    let(:params) { { timestamp: Time.now + 1.minute, value: 3 } }
+    let(:params) { { timestamp: DateTime.now + 1.minute, value: 3 } }
 
     context 'when params are valid' do
       before { post "/api/v1/metrics/#{metric_id}/values", params: params }

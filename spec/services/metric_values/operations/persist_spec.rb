@@ -7,7 +7,7 @@ RSpec.describe MetricValues::Operations::Persist do
     context 'create new record usage' do
       let(:attrs) do
         {
-          timestamp: Time.now + 1.minute,
+          timestamp: DateTime.now + 1.minute,
           value: 2.5,
           metric_id: metric.id
         }
@@ -36,8 +36,8 @@ RSpec.describe MetricValues::Operations::Persist do
     end
 
     context 'update existing record usage' do
-      let!(:value) { create(:metric_value, timestamp: Time.now + 1.minute, value: 3, metric: metric) }
-      let(:params) { { timestamp: Time.now + 5.minute, value: 1, metric_id: metric.id } }
+      let!(:value) { create(:metric_value, timestamp: DateTime.now + 1.minute, value: 3, metric: metric) }
+      let(:params) { { timestamp: DateTime.now + 5.minute, value: 1, metric_id: metric.id } }
 
       it 'should update the existing record' do
         result = subject.call(value_record: value, params: params)
