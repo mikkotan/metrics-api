@@ -68,8 +68,8 @@ RSpec.describe 'Metric Values API', type: :request do
         expect(deleted_value).to eq nil
       end
 
-      it 'return status 204' do
-        expect(response).to have_http_status(204)
+      it 'return status 200' do
+        expect(response).to have_http_status 200
       end
     end
 

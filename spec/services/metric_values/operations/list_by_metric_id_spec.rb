@@ -11,7 +11,6 @@ RSpec.describe MetricValues::Operations::ListByMetricId do
       result_values = result.success
 
       expect(result).to be_success
-      expect(result_values.first.id).to eq values.first.id
       expect(result_values.size).to eq values.size
     end
   end

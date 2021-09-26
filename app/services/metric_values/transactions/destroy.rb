@@ -6,7 +6,7 @@ module MetricValues
       def initialize(deps = {})
         contract = deps[:contract] || Contracts::Destroy.new
         @apply_contract = deps[:apply_contract] || App::ApplyContract.new(contract)
-        @validate_metric = deps[:validate_metric] || Metric::Operations::FindById.new
+        @validate_metric = deps[:validate_metric] || Metrics::Operations::FindById.new
         @find_value = deps[:find_value] || Operations::FindById.new
       end
 

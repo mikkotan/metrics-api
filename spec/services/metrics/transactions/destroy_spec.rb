@@ -7,7 +7,7 @@ RSpec.describe Metrics::Transactions::Destroy do
 
     it 'deletes the metric record' do
       result = subject.call(metric_id)
-      deleted_metric_id = result.success
+      deleted_metric_id = result.success[:deleted_metric_id]
       deleted_metric = Metric.where(id: deleted_metric_id).limit(1).first
 
       expect(result).to be_success

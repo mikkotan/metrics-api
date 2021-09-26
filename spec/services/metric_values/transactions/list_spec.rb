@@ -7,7 +7,7 @@ RSpec.describe MetricValues::Transactions::List do
     let(:success) { Dry::Monads::Result::Success.new(:ok) }
 
     let(:subject) { described_class.new(validate_metric: validate_metric, list: list) }
-    let(:params) { metric_id: 'sample-uuid-1' }
+    let(:params) { { metric_id: 'sample-uuid-1' } }
 
     context 'when params are valid' do
       it 'returns success monad with values' do

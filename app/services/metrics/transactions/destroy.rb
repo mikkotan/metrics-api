@@ -10,7 +10,7 @@ module Metrics
       def call(id)
         metric = yield @find_metric.call(id)
         metric.destroy
-        Success(id)
+        Success(deleted_metric_id: id)
       end
     end
   end
