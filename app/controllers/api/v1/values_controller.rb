@@ -2,6 +2,7 @@ module Api
   module V1
     class ValuesController < ApplicationController
       before_action :find_metric
+      rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
       def index
         values = @metric.values
@@ -26,8 +27,16 @@ module Api
 
       private
 
+      def value_params
+        params.permit(:timestamp, :value)
+      end
+
       def find_metric
         @metric = Metric.find params[:metric_id]
+      end
+
+      def render_not_found
+        render json: 'Record not found', status: :not_found
       end
     end
   end
