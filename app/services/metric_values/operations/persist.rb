@@ -5,15 +5,12 @@ module MetricValues
 
       def call(value_record: nil, params:)
         value = value_record || MetricValue.new
-
-        value.metric_id = params[:metric_id]
-        value.timestamp = params[:timestamp]
-        value.value = params[:value]
+        value.assign_attributes(params)
         value.save!
 
         Success(value)
-      rescue ActiveRecord::RecordInvalid
-        Failure([:invalid_record, value.errors.full_messages])
+      rescue ActiveRecord::StatementInvalid
+        Failure([:statement_invalid])
       end
     end
   end

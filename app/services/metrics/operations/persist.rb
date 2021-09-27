@@ -5,13 +5,12 @@ module Metrics
 
       def call(metric_record: nil, params:)
         metric = metric_record || Metric.new
-
-        metric.name = params[:name]
+        metric.assign_attributes(params)
         metric.save!
 
         Success(metric)
-      rescue ActiveRecord::RecordInvalid
-        Failure([:invalid_record, metric.errors.full_messages])
+      rescue ActiveRecord::StatementInvalid
+        Failure([:statement_invalid])
       end
     end
   end
