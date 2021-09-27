@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :metric do
-    name { Faker::Lorem.word }
+    sequence(:name) { |n| "Metric #{n}" }
   end
 end

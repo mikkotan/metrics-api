@@ -10,7 +10,7 @@ module Metrics
 
         Success(metric)
       rescue ActiveRecord::StatementInvalid
-        Failure([:statement_invalid])
+        Failure(:statement_invalid)
       end
     end
   end

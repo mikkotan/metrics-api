@@ -10,7 +10,7 @@ module MetricValues
 
         Success(value)
       rescue ActiveRecord::StatementInvalid
-        Failure([:statement_invalid])
+        Failure(:statement_invalid)
       end
     end
   end

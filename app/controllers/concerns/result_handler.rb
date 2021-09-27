@@ -11,7 +11,7 @@ module ResultHandler
       handle_not_found(e)
     in Failure[:invalid_params, e]
       handle_unprocessable_entity(e)
-    in Failure[:statement_invalid]
+    in Failure(:statement_invalid)
       handle_unprocessable_entity(STATEMENT_INVALID_MSG)
     else
       handle_bad_request

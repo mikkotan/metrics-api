@@ -18,11 +18,10 @@ RSpec.describe Metrics::Operations::Persist do
       context 'and when attributes are invalid' do
         it 'should return failure' do
           result = subject.call(params: new_attrs.except(:name))
-          error, messages = result.failure
+          error = result.failure
 
           expect(result).to be_failure
-          expect(error).to eq :invalid_record
-          expect(messages).to include "Name can't be blank"
+          expect(error).to eq :statement_invalid
         end
       end
     end
