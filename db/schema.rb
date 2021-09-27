@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_27_144547) do
+ActiveRecord::Schema.define(version: 2021_09_27_151827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "metric_values", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "timestamp"
-    t.float "value"
+    t.datetime "timestamp", null: false
+    t.float "value", null: false
     t.uuid "metric_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -32,4 +32,5 @@ ActiveRecord::Schema.define(version: 2021_09_27_144547) do
     t.index ["name"], name: "index_metrics_on_name", unique: true
   end
 
+  add_foreign_key "metric_values", "metrics"
 end
