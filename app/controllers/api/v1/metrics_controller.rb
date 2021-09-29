@@ -6,6 +6,11 @@ module Api
         handle_result(result)
       end
 
+      def show
+        result = Metrics::Transactions::FindById.new.call(hash_params[:id])
+        handle_result(result)
+      end
+
       def create
         result = Metrics::Transactions::Create.new.call(hash_params)
         handle_result(result, :created)

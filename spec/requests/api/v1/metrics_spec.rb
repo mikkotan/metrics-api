@@ -10,7 +10,6 @@ RSpec.describe 'Metrics API', type: :request do
     it 'returns metrics' do
       expect(json).not_to be_empty
       expect(json.size).to eq 5
-      expect(json.last['id']).to eq metric_id
     end
 
     it 'returns status 200' do
@@ -39,6 +38,23 @@ RSpec.describe 'Metrics API', type: :request do
       it 'returns status 422' do
         expect(response).to have_http_status 422
       end
+    end
+  end
+
+  describe 'GET /api/v1/metrics/:id' do
+    context 'when record exists' do
+      before { get "/api/v1/metrics/#{metric_id}" }
+
+      it 'returns metric record' do
+        expect(json['id']).to eq metric_id
+      end
+
+      it 'returns status 200' do
+        expect(response).to have_http_status 200
+      end
+    end
+
+    context 'when record does not exist' do
     end
   end
 
