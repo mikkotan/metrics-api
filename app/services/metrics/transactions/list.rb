@@ -8,7 +8,7 @@ module Metrics
       end
 
       def call()
-        metrics = @metric_klass.all
+        metrics = @metric_klass.all.order('created_at DESC')
         Success(metrics)
       end
     end
