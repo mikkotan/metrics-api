@@ -2,22 +2,65 @@ require 'rails_helper'
 
 RSpec.describe 'Metric Values API', type: :request do
   let!(:metric) { create(:metric, name: 'Network Requests') }
-  let!(:values) { create_list(:metric_value, 5, metric: metric) }
+  let!(:values) do
+    create_list(
+      :metric_value,
+      5,
+      metric: metric,
+      value: 70,
+      timestamp: DateTime.now
+    )
+  end
+  let!(:past_seven_days_value) do
+    create(
+      :metric_value,
+      metric: metric,
+      timestamp: DateTime.now - 14.days
+    )
+  end
   let(:metric_id) { metric.id }
   let(:value_id) { values.first.id }
 
   describe 'GET /api/v1/metrics/:metric_id/values' do
     context 'when parent metric exists' do
-      before { get "/api/v1/metrics/#{metric_id}/values" }
+      context 'and query params not specified' do
+        before { get "/api/v1/metrics/#{metric_id}/values" }
 
-      it 'returns metric values' do
-        expect(json).not_to be_empty
-        expect(json.size).to eq 5
-        expect(json.first['id']).to eq values.first.id
+        it 'returns metric values' do
+          expect(json['list']).not_to be_empty
+          expect(json['list'].size).to eq 6
+        end
+  
+        it 'return status 200' do
+          expect(response).to have_http_status 200
+        end
       end
 
-      it 'return status 200' do
-        expect(response).to have_http_status 200
+      context 'and query params are specified' do
+        let(:params) {
+          {
+            query: {
+              from: (DateTime.now - 7.days).beginning_of_day,
+              to: DateTime.now.end_of_day
+            }
+          }
+        }
+
+        before { get "/api/v1/metrics/#{metric_id}/values", params: params }
+
+        it 'should filter by timestamp' do
+          expect(response).to have_http_status 200
+          expect(json['list'].size).to eq 5
+        end
+
+        it 'should return average object' do
+          avg = json['average']
+
+          expect(avg).not_to be_empty
+          expect(avg['per_minute']).to eq '0.0347'
+          expect(avg['per_hour']).to eq '2.08'
+          expect(avg['per_day']).to eq '50.0'
+        end
       end
     end
 
@@ -37,8 +80,8 @@ RSpec.describe 'Metric Values API', type: :request do
       before { post "/api/v1/metrics/#{metric_id}/values", params: params }
 
       it 'returns the created metric value record' do
-        expect(json['value']).to eq params[:value]
-        expect(metric.values.size).to eq 6
+        expect(json['value'].to_i).to eq params[:value]
+        expect(metric.values.size).to eq 7
       end
 
       it 'return status 201' do
@@ -64,7 +107,7 @@ RSpec.describe 'Metric Values API', type: :request do
       it 'deletes the metric value record' do
         deleted_value = MetricValue.where(id: value_id).limit(1).first
 
-        expect(metric.values.size).to eq 4
+        expect(metric.values.size).to eq 5
         expect(deleted_value).to eq nil
       end
 
