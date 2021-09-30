@@ -24,7 +24,7 @@ module MetricValues
       private
 
       def total_values_from(collection)
-        @total_values_from ||= collection.pluck(:value).sum
+        collection.pluck(:value).sum
       end
 
       def calculate_days_from(query)
@@ -36,11 +36,11 @@ module MetricValues
       end
 
       def get_hours_from(days)
-        @get_hours_from ||= days * HOURS
+        days * HOURS
       end
 
       def get_minutes_from(hours)
-        @get_minutes_from ||= hours * MINUTES
+        hours * MINUTES
       end
     end
   end
