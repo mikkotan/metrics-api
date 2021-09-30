@@ -1,4 +1,5 @@
 require 'dry/monads/do'
+require 'dry-struct'
 
 module App
   module Transaction
@@ -12,6 +13,13 @@ module App
     def self.included(base)
       base.include(Dry::Monads[:result])
     end
+  end
+
+  module Types
+    include Dry.Types()
+  end
+
+  class Struct < Dry::Struct
   end
 
   class Contract < Dry::Validation::Contract

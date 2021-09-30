@@ -10,6 +10,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'pgcrypto'
 gem 'dry-monads'
 gem 'dry-validation'
+gem 'dry-struct'
 gem 'rack-cors'
 
 group :development, :test do
