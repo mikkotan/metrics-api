@@ -1,24 +1,67 @@
-# README
+# Metrics API
+## Run this project on your local machine
+### Pre-requisites
+- Docker
+- Docker-compose
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Get Started
+Clone the project
+```
+$ git clone git@gitlab.com:michael.tan/metrics-api.git
+```
+Change directory
+```
+$ cd metrics-api
+```
+Build with docker
+```
+$ docker-compose build
+```
+Create database
+```
+$ docker-compose run --rm web rails db:create
+```
+Run migration files
+```
+$ docker-compose run --rm web rails db:migrate
+```
+Run containers
+```
+$ docker-compose up -d
+```
+Run tests
+```
+$ docker-compose run --rm web rspec
+```
 
-Things you may want to cover:
+### API Endpoints
+**Metrics API**
+```
+POST /api/v1/metrics
+GET /api/v1/metrics
+GET /api/v1/metrics/:id
+PUT /api/v1/metrics/:id
+DELETE /api/v1/metrics/:id
+```
 
-* Ruby version
+Metric Params:
+```
+{
+  name: 'Player Retention Rate'
+}
+```
 
-* System dependencies
+**Metric Values API**
+```
+GET /api/v1/:metric_id/values?query[from]=""&query[to]=""
+POST /api/v1/:metric_id/values
+DELETE /api/v1/:metric_id/values/:id
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+MetricValue params:
+```
+{
+  value: 10,
+  timestamp: Time.now
+}
+```
