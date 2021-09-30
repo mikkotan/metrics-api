@@ -10,10 +10,9 @@ module Metrics
 
       def call(id)
         metric = yield @find_metric.call(id)
-        values = metric.values
 
         @db.transaction do
-          values.destroy_all if values.any?
+          metric.values.delete_all
           metric.destroy
         end
 

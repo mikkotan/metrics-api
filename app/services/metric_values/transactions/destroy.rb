@@ -17,10 +17,10 @@ module MetricValues
 
         value.destroy
 
-        Success({
+        Success(
           metric_id: metric.id,
           id: value.id
-        })
+        )
       end
     end
   end

@@ -7,7 +7,7 @@ module Api
       end
 
       def show
-        result = Metrics::Transactions::FindById.new.call(hash_params[:id])
+        result = Metrics::Operations::FindById.new.call(hash_params[:id])
         handle_result(result)
       end
 
