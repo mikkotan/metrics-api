@@ -121,3 +121,6 @@ MetricValue params:
   timestamp: Time.now
 }
 ```
+
+### Setup the frontend
+- Visit this [link](https://github.com/mikkotan/metrics-web)
