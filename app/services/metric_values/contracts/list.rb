@@ -4,10 +4,8 @@ module MetricValues
       params do
         required(:metric_id).filled(:string)
 
-        optional(:query).schema do
-          required(:from).filled(:date_time)
-          required(:to).filled(:date_time)
-        end
+        optional(:from).maybe(:date_time)
+        optional(:to).maybe(:date_time)
       end
     end
   end

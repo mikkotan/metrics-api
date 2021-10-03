@@ -17,8 +17,9 @@ module MetricValues
         yield @validate_metric.call(valid_params[:metric_id])
 
         list = yield @list.call(valid_params[:metric_id])
-        filtered_list = yield @apply_filter.call(list, valid_params[:query])
-        average = yield @get_avg.call(filtered_list, valid_params[:query])
+
+        filtered_list = yield @apply_filter.call(list, valid_params)
+        average = yield @get_avg.call(filtered_list, valid_params)
         entity = Entities::ListWithAverage.new(
           list: filtered_list.to_a,
           average: average

@@ -24,10 +24,8 @@ RSpec.describe MetricValues::Transactions::List do
     let(:params) do
       {
         metric_id: 'sample-uuid-1',
-        query: {
-          from: DateTime.now.beginning_of_day,
-          to: DateTime.now.end_of_day
-        }
+        from: DateTime.now.beginning_of_day,
+        to: DateTime.now.end_of_day
       }
     end
 
@@ -35,8 +33,8 @@ RSpec.describe MetricValues::Transactions::List do
       it 'returns success monad with values' do
         expect(validate_metric).to receive(:call).with(params[:metric_id]) { success_ok }
         expect(list).to receive(:call).with(params[:metric_id]) { success_array }
-        expect(apply_filter).to receive(:call).with(list_array, params[:query]) { success_array }
-        expect(get_avg).to receive(:call).with(list_array, params[:query]) { success_avg }
+        expect(apply_filter).to receive(:call).with(list_array, params) { success_array }
+        expect(get_avg).to receive(:call).with(list_array, params) { success_avg }
 
         result = subject.call(params)
         expected_entity = MetricValues::Entities::ListWithAverage.new(

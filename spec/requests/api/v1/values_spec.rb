@@ -39,10 +39,8 @@ RSpec.describe 'Metric Values API', type: :request do
       context 'and query params are specified' do
         let(:params) {
           {
-            query: {
-              from: (DateTime.now - 7.days).beginning_of_day,
-              to: DateTime.now.end_of_day
-            }
+            from: (DateTime.now - 7.days).beginning_of_day,
+            to: DateTime.now.end_of_day
           }
         }
 

@@ -6,8 +6,8 @@ module MetricValues
       HOURS = 24
       MINUTES = 60
 
-      def call(collection, query = nil)
-        return Success(nil) if query.nil?
+      def call(collection, query = {})
+        return Success(nil) unless query[:from] && query[:to]
 
         total_values = total_values_from(collection)
         days = calculate_days_from(query)
