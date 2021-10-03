@@ -5,7 +5,7 @@ RSpec.describe 'Metrics API', type: :request do
   let(:metric_id) { metrics.last.id }
 
   describe 'GET /api/v1/metrics' do
-    before { get '/api/v1/metrics' }
+    before { get api_v1_metrics_path }
 
     it 'returns metrics' do
       expect(json).not_to be_empty
@@ -21,7 +21,7 @@ RSpec.describe 'Metrics API', type: :request do
     let(:params) { { name: 'CPU Utilization'} }
 
     context 'when params are valid' do
-      before { post '/api/v1/metrics', params: params }
+      before { post api_v1_metrics_path, params: params }
 
       it 'return created metric' do
         expect(json['name']).to eq params[:name]
@@ -33,7 +33,7 @@ RSpec.describe 'Metrics API', type: :request do
     end
 
     context 'when params are invalid' do
-      before { post '/api/v1/metrics', params: params.except(:name) }
+      before { post api_v1_metrics_path, params: params.except(:name) }
 
       it 'returns status 422' do
         expect(response).to have_http_status 422
@@ -43,7 +43,7 @@ RSpec.describe 'Metrics API', type: :request do
 
   describe 'GET /api/v1/metrics/:id' do
     context 'when record exists' do
-      before { get "/api/v1/metrics/#{metric_id}" }
+      before { get api_v1_metric_path(metric_id) }
 
       it 'returns metric record' do
         expect(json['id']).to eq metric_id
@@ -62,7 +62,7 @@ RSpec.describe 'Metrics API', type: :request do
     let(:update_params) { { name: 'CPU Visualization' } }
 
     context 'when metric is found' do
-      before { put "/api/v1/metrics/#{metric_id}", params: update_params }
+      before { put api_v1_metric_path(metric_id), params: update_params }
 
       it 'returns updated metric' do
         expect(json['name']).to eq update_params[:name]
@@ -74,7 +74,7 @@ RSpec.describe 'Metrics API', type: :request do
     end
 
     context 'when metric is not found' do
-      before { put '/api/v1/metrics/not-valid-uuid', params: update_params }
+      before { put api_v1_metric_path('not-valid-uuid'), params: update_params }
 
       it 'return status 404' do
         expect(response).to have_http_status 404

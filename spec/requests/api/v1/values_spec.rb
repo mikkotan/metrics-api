@@ -24,7 +24,7 @@ RSpec.describe 'Metric Values API', type: :request do
   describe 'GET /api/v1/metrics/:metric_id/values' do
     context 'when parent metric exists' do
       context 'and query params not specified' do
-        before { get "/api/v1/metrics/#{metric_id}/values" }
+        before { get api_v1_metric_values_path(metric_id) }
 
         it 'returns metric values' do
           expect(json['list']).not_to be_empty
@@ -46,7 +46,7 @@ RSpec.describe 'Metric Values API', type: :request do
           }
         }
 
-        before { get "/api/v1/metrics/#{metric_id}/values", params: params }
+        before { get api_v1_metric_values_path(metric_id), params: params }
 
         it 'should filter by timestamp' do
           expect(response).to have_http_status 200
@@ -65,7 +65,7 @@ RSpec.describe 'Metric Values API', type: :request do
     end
 
     context 'when parent metric does not exists' do
-      before { get '/api/v1/metrics/none-existing-uuid/values' }
+      before { get api_v1_metric_values_path('none-existing-uuid') }
 
       it 'return status 404' do
         expect(response).to have_http_status 404
@@ -77,7 +77,7 @@ RSpec.describe 'Metric Values API', type: :request do
     let(:params) { { timestamp: DateTime.now + 1.minute, value: 3 } }
 
     context 'when params are valid' do
-      before { post "/api/v1/metrics/#{metric_id}/values", params: params }
+      before { post api_v1_metric_values_path(metric_id), params: params }
 
       it 'returns the created metric value record' do
         expect(json['value'].to_i).to eq params[:value]
@@ -91,7 +91,7 @@ RSpec.describe 'Metric Values API', type: :request do
 
     context 'when params are invalid' do
       before do
-        post "/api/v1/metrics/#{metric_id}/values", params: params.except(:value)
+        post api_v1_metric_values_path(metric_id), params: params.except(:value)
       end
 
       it 'return status 422' do
@@ -102,7 +102,7 @@ RSpec.describe 'Metric Values API', type: :request do
 
   describe 'DELETE /api/v1/metrics/:metric_id/values/:id' do
     context 'when value exists' do
-      before { delete "/api/v1/metrics/#{metric_id}/values/#{value_id}" }
+      before { delete api_v1_metric_value_path(metric_id, value_id) }
 
       it 'deletes the metric value record' do
         deleted_value = MetricValue.where(id: value_id).limit(1).first
@@ -117,7 +117,7 @@ RSpec.describe 'Metric Values API', type: :request do
     end
 
     context 'when value does not exist' do
-      before { delete "/api/v1/metrics/#{metric_id}/values/yet-another-none-existing-uuid" }
+      before { delete api_v1_metric_value_path(metric_id, 'yet-another-none-existing-uuid') }
 
       it 'returns status 404' do
         expect(response).to have_http_status 404
