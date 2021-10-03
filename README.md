@@ -109,7 +109,7 @@ Metric Params:
 
 **Metric Values API**
 ```
-GET /api/v1/:metric_id/values?query[from]=""&query[to]=""
+GET /api/v1/:metric_id/values?from=2021-09-27T00:51:42%2B08:00&to=2021-10-04T23:59:59%2B08:00
 POST /api/v1/:metric_id/values
 DELETE /api/v1/:metric_id/values/:id
 ```
