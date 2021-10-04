@@ -7,7 +7,7 @@
 ### Get Started
 1. Clone the project
 ```
-$ git clone git@gitlab.com:michael.tan/metrics-api.git
+$ git clone git@github.com:mikkotan/metrics-api.git
 ```
 2. Change directory
 ```
